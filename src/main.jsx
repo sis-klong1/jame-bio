@@ -1,97 +1,57 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import { Mail, ExternalLink } from 'lucide-react';
-import './style.css';
+// src/main.jsx
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import './style.css'
 
-const profileImage = 'https://i.ibb.co/5hV3z4Jh/IMG-5999.jpg';
-
-const links = [
+const socialLinks = [
   {
-    type: 'tiktok',
-    label: 'lifewithjame_s',
-    url: 'https://www.tiktok.com/@niroot.k',
+    name: 'TikTok',
+    url: 'https://tiktok.com/@yourusername',
+    icon: 'https://cdn.simpleicons.org/tiktok/000000',
   },
   {
-    type: 'tiktok',
-    label: 'J-AME (s)',
-    url: 'https://www.tiktok.com/@iloveyouja.mes',
+    name: 'Instagram',
+    url: 'https://instagram.com/yourusername',
+    icon: 'https://cdn.simpleicons.org/instagram/000000',
   },
   {
-    type: 'instagram',
-    label: 'lifewithjame_s',
-    url: 'https://www.instagram.com/lifewithjame_s',
+    name: 'Facebook',
+    url: 'https://facebook.com/yourusername',
+    icon: 'https://cdn.simpleicons.org/facebook/000000',
   },
-  {
-    type: 'facebook',
-    label: 'Niroot Kongchin',
-    url: 'https://www.facebook.com/niroot.kongchin',
-  },
-];
-
-function SocialIcon({ type }) {
-  if (type === 'tiktok') return <span className="brand-icon tiktok">♪</span>;
-  if (type === 'instagram') return <span className="brand-icon instagram">◎</span>;
-  return <span className="brand-icon facebook">f</span>;
-}
+]
 
 function App() {
   return (
-    <main className="page">
-      <div className="ambient ambient-one" />
-      <div className="ambient ambient-two" />
+    <div className="container">
+      {/* ส่วนหัว / โปรไฟล์ */}
+      <div className="profile">
+        <img className="avatar" src="/avatar.jpg" alt="Profile" />
+        <h1>Life with Jame</h1>
+        <p>Welcome to my link bio!</p>
+      </div>
 
-      <section className="bio-card">
-        <div className="profile-wrap">
-          <img className="profile" src={profileImage} alt="Life With Jame_s" />
-        </div>
-
-        <h1>Life With Jame_s</h1>
-        <p className="bio">Sharing stays, food and memorable trips together 🇹🇭</p>
-
-        <div className="primary-actions">
+      {/* รายการปุ่มลิงก์พร้อมไอคอนสีดำ */}
+      <div className="links-container">
+        {socialLinks.map((item, index) => (
           <a
-            className="glass-action line"
-            href="https://lin.ee/TVHEeIG"
+            key={index}
+            href={item.url}
             target="_blank"
-            rel="noreferrer"
-            aria-label="Open Line"
+            rel="noopener noreferrer"
+            className="link-button"
           >
-            <span className="line-logo">LINE</span>
-            <span>LINE</span>
+            <img src={item.icon} alt={item.name} width="22" height="22" />
+            <span>{item.name}</span>
           </a>
-
-          <a className="glass-action" href="mailto:siz.skk1@gmail.com" aria-label="Send email">
-            <Mail size={19} strokeWidth={2.1} />
-            <span>Email</span>
-          </a>
-        </div>
-
-        <div className="social-list">
-          {links.map((link) => (
-            <a
-              className="social-link"
-              href={link.url}
-              target="_blank"
-              rel="noreferrer"
-              key={link.url}
-            >
-              <span className="social-left">
-                <SocialIcon type={link.type} />
-                <span>{link.label}</span>
-              </span>
-              <ExternalLink size={16} strokeWidth={1.8} className="external" />
-            </a>
-          ))}
-        </div>
-
-        <footer>Life With Jame_s · Thailand 🇹🇭</footer>
-      </section>
-    </main>
-  );
+        ))}
+      </div>
+    </div>
+  )
 }
 
-createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <App />
   </React.StrictMode>
-);
+)
