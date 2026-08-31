@@ -28,10 +28,22 @@ const links = [
   },
 ];
 
+const iconUrls = {
+  tiktok: 'https://cdn.simpleicons.org/tiktok/000000',
+  instagram: 'https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/instagram.svg',
+  facebook: 'https://cdn.simpleicons.org/facebook/000000',
+};
+
 function SocialIcon({ type }) {
-  if (type === 'tiktok') return <span className="brand-icon tiktok">♪</span>;
-  if (type === 'instagram') return <span className="brand-icon instagram">◎</span>;
-  return <span className="brand-icon facebook">f</span>;
+  return (
+    <span className="brand-icon">
+      <img 
+        src={iconUrls[type]} 
+        alt={type} 
+        style={{ width: '18px', height: '18px', display: 'block' }} 
+      />
+    </span>
+  );
 }
 
 function App() {
