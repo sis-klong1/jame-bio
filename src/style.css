@@ -34,6 +34,8 @@ a { color: inherit; text-decoration: none; }
     radial-gradient(circle at 15% 5%, rgba(255,255,255,.95), transparent 34%),
     radial-gradient(circle at 90% 20%, rgba(224,214,239,.75), transparent 34%),
     linear-gradient(145deg, #f7f5f8 0%, #ece8f0 52%, #f7f3f6 100%);
+  background-size: 200% 200%;
+  animation: gradientShift 16s ease infinite;
 }
 
 .ambient {
@@ -42,6 +44,8 @@ a { color: inherit; text-decoration: none; }
   filter: blur(55px);
   pointer-events: none;
   opacity: .5;
+  animation: float 14s ease-in-out infinite;
+  will-change: transform;
 }
 .ambient-one {
   width: 180px; height: 180px;
@@ -52,11 +56,14 @@ a { color: inherit; text-decoration: none; }
   width: 150px; height: 150px;
   background: rgba(255, 218, 228, .5);
   bottom: 8%; right: -55px;
+  animation-delay: -7s;
+  animation-duration: 18s;
 }
 
 .bio-card {
   position: relative;
   z-index: 1;
+  isolation: isolate;
   width: min(100%, 430px);
   min-height: calc(100dvh - 56px);
   padding: 30px 18px 24px;
@@ -73,12 +80,33 @@ a { color: inherit; text-decoration: none; }
   box-shadow:
     0 28px 70px rgba(52, 42, 62, .12),
     inset 0 1px 0 rgba(255,255,255,.88),
-    inset 0 -1px 0 rgba(255,255,255,.25);
+    inset 0 -1px 0 rgba(255,255,255,.25),
+    inset 1px 0 0 rgba(255,150,200,.1),
+    inset -1px 0 0 rgba(150,180,255,.1);
   backdrop-filter: blur(28px) saturate(145%);
   -webkit-backdrop-filter: blur(28px) saturate(145%);
 }
 
+.bio-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    115deg,
+    rgba(255,255,255,.55) 0%,
+    transparent 22%,
+    transparent 78%,
+    rgba(255,255,255,.28) 100%
+  );
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 1;
+}
+
 .profile-wrap {
+  position: relative;
+  z-index: 2;
   width: 104px;
   height: 104px;
   padding: 4px;
@@ -87,6 +115,22 @@ a { color: inherit; text-decoration: none; }
   box-shadow:
     0 12px 30px rgba(53,43,63,.14),
     inset 0 1px 1px rgba(255,255,255,.95);
+}
+
+.profile-wrap::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 180deg,
+    rgba(255,180,220,.3),
+    rgba(180,210,255,.3),
+    rgba(255,180,220,.3)
+  );
+  z-index: -1;
+  filter: blur(6px);
+  animation: spin 8s linear infinite;
 }
 
 .profile {
@@ -98,6 +142,8 @@ a { color: inherit; text-decoration: none; }
 }
 
 h1 {
+  position: relative;
+  z-index: 2;
   margin: 18px 0 6px;
   font-size: 24px;
   line-height: 1.15;
@@ -106,6 +152,8 @@ h1 {
 }
 
 .bio {
+  position: relative;
+  z-index: 2;
   max-width: 300px;
   margin: 0;
   text-align: center;
@@ -116,6 +164,8 @@ h1 {
 }
 
 .primary-actions {
+  position: relative;
+  z-index: 2;
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -132,7 +182,11 @@ h1 {
     inset 0 1px 0 rgba(255,255,255,.82);
   backdrop-filter: blur(18px) saturate(135%);
   -webkit-backdrop-filter: blur(18px) saturate(135%);
-  transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
+  transition: transform .25s cubic-bezier(.34,1.56,.64,1),
+              border-radius .25s ease,
+              background .18s ease,
+              box-shadow .18s ease,
+              filter .2s ease;
 }
 
 .glass-action {
@@ -148,7 +202,12 @@ h1 {
 
 .glass-action:active,
 .social-link:active {
-  transform: scale(.975);
+  transform: scale(.96);
+  border-radius: 24px;
+}
+
+.glass-action.line:active {
+  border-radius: 26px;
 }
 
 .glass-action:hover,
@@ -157,6 +216,7 @@ h1 {
   box-shadow:
     0 10px 28px rgba(54,45,64,.1),
     inset 0 1px 0 rgba(255,255,255,.95);
+  filter: saturate(1.15);
 }
 
 .line-logo {
@@ -170,9 +230,16 @@ h1 {
   font-size: 8px;
   font-weight: 800;
   letter-spacing: -.3px;
+  transition: transform .2s ease;
+}
+
+.glass-action:hover .line-logo {
+  transform: scale(1.08);
 }
 
 .social-list {
+  position: relative;
+  z-index: 2;
   width: 100%;
   display: grid;
   gap: 9px;
@@ -207,6 +274,11 @@ h1 {
   border: 1px solid rgba(255,255,255,.75);
   font-weight: 800;
   box-shadow: inset 0 1px 0 rgba(255,255,255,.9);
+  transition: transform .2s ease;
+}
+
+.social-link:hover .brand-icon {
+  transform: scale(1.08);
 }
 
 .external {
@@ -214,12 +286,29 @@ h1 {
 }
 
 footer {
+  position: relative;
+  z-index: 2;
   margin-top: auto;
   padding-top: 28px;
   color: rgba(23,21,26,.38);
   font-size: 10px;
   font-weight: 500;
   letter-spacing: .15px;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%      { transform: translate(24px, -18px) scale(1.08); }
+  66%      { transform: translate(-18px, 14px) scale(0.94); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 @media (max-width: 380px) {
