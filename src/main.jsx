@@ -74,6 +74,11 @@ function App() {
 
   return (
     <main className="page">
+      <div className="sea-backdrop">
+  <div className="sea-layer sea-day" />
+  <div className="sea-layer sea-night" />
+</div>
+
       <div className="ambient ambient-one" />
       <div className="ambient ambient-two" />
       <div className="ambient ambient-three" />
