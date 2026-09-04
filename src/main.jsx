@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Mail, ExternalLink } from 'lucide-react';
 import './style.css';
@@ -34,23 +34,49 @@ const iconUrls = {
   facebook: 'https://cdn.simpleicons.org/facebook/000000',
 };
 
+// 06:00–19:00 = day, 19:01–05:59 = night
+function getPeriod() {
+  const now = new Date();
+  const minutes = now.getHours() * 60 + now.getMinutes();
+  const dayStart = 6 * 60;
+  const dayEnd = 19 * 60;
+  return minutes >= dayStart && minutes <= dayEnd ? 'day' : 'night';
+}
+
 function SocialIcon({ type }) {
   return (
     <span className="brand-icon">
-      <img 
-        src={iconUrls[type]} 
-        alt={type} 
-        style={{ width: '18px', height: '18px', display: 'block' }} 
+      <img
+        src={iconUrls[type]}
+        alt={type}
+        style={{ width: '18px', height: '18px', display: 'block' }}
       />
     </span>
   );
 }
 
 function App() {
+  const [theme, setTheme] = useState(getPeriod);
+
+  // เขียนธีมลง <html> เพื่อให้ CSS variables ทั้งหมด fade ตามกัน
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
+
+  // เช็คเวลาซ้ำทุก 30 วินาที เผื่อเปิดหน้าค้างข้ามช่วงเวลา
+  useEffect(() => {
+    const id = setInterval(() => {
+      const next = getPeriod();
+      setTheme((prev) => (prev === next ? prev : next));
+    }, 30000);
+    return () => clearInterval(id);
+  }, []);
+
   return (
     <main className="page">
       <div className="ambient ambient-one" />
       <div className="ambient ambient-two" />
+      <div className="ambient ambient-three" />
 
       <section className="bio-card">
         <div className="profile-wrap">
