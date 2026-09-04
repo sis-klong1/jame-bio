@@ -420,3 +420,43 @@ footer {
     max-width: 430px;
   }
 }
+/* ===== Sea Background Day/Night ===== */
+.page {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.sea-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.sea-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+}
+
+.sea-day {
+  background-image: url('https://i.ibb.co/JjfBCWy1/IMG-1110.jpg');
+  opacity: 1;
+}
+
+.sea-night {
+  background-image: url('https://i.ibb.co/84ssC17B/IMG-6349.jpg');
+  opacity: 0;
+}
+
+[data-theme="night"] .sea-day {
+  opacity: 0;
+}
+
+[data-theme="night"] .sea-night {
+  opacity: 1;
+}
